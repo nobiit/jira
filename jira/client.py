@@ -55,6 +55,7 @@ from jira.resources import (
     AgileResource,
     Attachment,
     Board,
+    BoardConfiguration,
     Comment,
     Component,
     Customer,
@@ -4739,6 +4740,18 @@ class JIRA:
             params,
             base=self.AGILE_BASE_URL,
         )
+
+    @translate_resource_args
+    def board_configuration(self, board_id: int) -> BoardConfiguration:
+        """Get board configuration Resources from an board.
+
+        Args:
+            board_id (int): the board to get configuration from
+
+        Returns:
+            BoardConfiguration
+        """
+        return BoardConfiguration(self._options, self._session, self._get_json(f'board/{board_id}/configuration', base=self.AGILE_BASE_URL))
 
     @translate_resource_args
     def sprints(

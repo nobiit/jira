@@ -11,11 +11,11 @@ import re
 import time
 from typing import TYPE_CHECKING, Any, Dict, List, Type, cast
 
+from jira.utils import json_loads, threaded_requests
 from requests import Response
 from requests.structures import CaseInsensitiveDict
 
 from jira.resilientsession import ResilientSession, parse_errors
-from jira.utils import json_loads, threaded_requests
 
 if TYPE_CHECKING:
     from jira.client import JIRA
@@ -1339,6 +1339,21 @@ class Board(AgileResource):
         raw: dict[str, Any] = None,
     ):
         AgileResource.__init__(self, "board/{id}", options, session, raw)
+
+
+class BoardConfiguration(Resource):
+    """A configuration of Board."""
+
+    def __init__(
+        self,
+        options: dict[str, str],
+        session: ResilientSession,
+        raw: dict[str, Any] = None,
+    ):
+        Resource.__init__(self, "board/{0}/configuration", options, session)
+        if raw:
+            self._parse_raw(raw)
+        self.raw: dict[str, Any] = cast(Dict[str, Any], self.raw)
 
 
 # Service Desk
